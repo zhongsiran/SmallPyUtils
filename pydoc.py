@@ -94,7 +94,7 @@ while 'q' not in choice:
     if choice == 'jd':
         pyperclip.copy(content['chu_fa_jue_ding'])
         print('行政处罚决定书')
-    if choice =='sp':
+    if choice == 'sp':
         pyperclip.copy(content['xing_chu_jue_ding'])
         print('行政处罚决定审批表')
     if choice == 'jdh':
