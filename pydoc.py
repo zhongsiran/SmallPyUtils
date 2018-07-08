@@ -80,7 +80,7 @@ else:
 # 以下选择剪贴板内容
 choice = ''
 while 'q' not in choice:
-    print('请输入关键字(zj,tz,jy,jd,sp)')
+    print('请输入关键字(zj,tz,jy,jd,sp,jdh)')
     choice = input()
     if choice == 'zj':
         pyperclip.copy(content['zhong_jie_bao_gao'])
