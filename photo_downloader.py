@@ -2,6 +2,7 @@ from qcloud_cos import CosConfig
 from qcloud_cos import CosS3Client
 import requests
 import os
+import re
 import sys
 import logging
 
@@ -26,24 +27,34 @@ class CosDownloader:
     def download(self, photos_keys_dict):
         root_dir = os.getcwd()
         print('Root dir is ' + root_dir)
-        for key in photos_keys_dict:
+        for corporation_name_with_id in photos_keys_dict:
+            cos_key = photos_keys_dict[corporation_name_with_id]
             response = self.client.get_object(
                 Bucket='aic-1253948304',
-                Key=key,
+                Key=cos_key,
             )
-            dirs_list = key.split('/')
+            dirs_list = cos_key.split('/')
             for to_be_created_dir in dirs_list:
                 if 'jpg' not in to_be_created_dir:
                     try:
                         os.mkdir(to_be_created_dir)
                         os.chdir(to_be_created_dir)
                     except FileExistsError:
+                        print(to_be_created_dir + ' already exists, go into in directly...')
                         os.chdir(to_be_created_dir)
                 else:
-                    if os.path.isfile(os.getcwd() + '/' + to_be_created_dir):
+                    corporation_name = re.sub(r'\^\w*', "", corporation_name_with_id)  # 取得企业真实名称
+                    try:
+                        os.mkdir(corporation_name)
+                        os.chdir(corporation_name)
+                    except FileExistsError:
+                        os.chdir(corporation_name)
+                    target_file = os.getcwd() + '/' + to_be_created_dir
+                    if os.path.isfile(target_file):
+                        print(target_file + ' already exists, no need to download again.')
                         pass
                     else:
-                        response['Body'].get_stream_to_file(os.getcwd() + '/' + to_be_created_dir)
+                        response['Body'].get_stream_to_file(target_file)
             print('Current dir is ' + os.getcwd() + '\nChanging to root dir')
             os.chdir(root_dir)
 
@@ -62,10 +73,10 @@ class CosDownloader:
         r = requests.get('https://www.shilingaic.cn/index.php/api/photos/' + div + '/' + action)
         photos_json = r.json()
         photos_data = photos_json['data']
-        photos_keys = []
+        photos_keys = {}
         for photo in photos_data:
-            # photos_keys[photo['corporation_name'] + '^' + str(photo['id'])] = (photo['link'])
-            photos_keys.append(photo['link'])
+            photos_keys[photo['corporation_name'] + '^' + str(photo['id'])] = (photo['link'])
+            # photos_keys.append(photo['link'])
         return photos_keys
 
 
