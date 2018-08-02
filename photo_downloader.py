@@ -4,7 +4,6 @@ import requests
 import os
 import re
 import sys
-import logging
 
 
 class CosDownloader:
@@ -26,13 +25,9 @@ class CosDownloader:
 
     def download(self, photos_keys_dict):
         root_dir = os.getcwd()
-        print('Root dir is ' + root_dir)
+        print(u'Root dir is ' + root_dir)
         for corporation_name_with_id in photos_keys_dict:
             cos_key = photos_keys_dict[corporation_name_with_id]
-            response = self.client.get_object(
-                Bucket='aic-1253948304',
-                Key=cos_key,
-            )
             dirs_list = cos_key.split('/')
             for to_be_created_dir in dirs_list:
                 if 'jpg' not in to_be_created_dir:
@@ -40,7 +35,7 @@ class CosDownloader:
                         os.mkdir(to_be_created_dir)
                         os.chdir(to_be_created_dir)
                     except FileExistsError:
-                        print(to_be_created_dir + ' already exists, go into in directly...')
+                        # print(to_be_created_dir + ' already exists, go into in directly...')
                         os.chdir(to_be_created_dir)
                 else:
                     corporation_name = re.sub(r'\^\w*', "", corporation_name_with_id)  # 取得企业真实名称
@@ -51,11 +46,15 @@ class CosDownloader:
                         os.chdir(corporation_name)
                     target_file = os.getcwd() + '/' + to_be_created_dir
                     if os.path.isfile(target_file):
-                        print(target_file + ' already exists, no need to download again.')
+                        print(to_be_created_dir + u' 已经存在')
                         pass
                     else:
+                        print(u'正在下载：' + to_be_created_dir)
+                        response = self.client.get_object(
+                            Bucket='aic-1253948304',
+                            Key=cos_key,
+                        )
                         response['Body'].get_stream_to_file(target_file)
-            print('Current dir is ' + os.getcwd() + '\nChanging to root dir')
             os.chdir(root_dir)
 
     @staticmethod
@@ -83,6 +82,6 @@ class CosDownloader:
 if __name__ == '__main__':
     c = CosDownloader()
     # print(c.get_action_photos_dict())
-    print(c.get_action_photos('sl', '2018-06'))
-    c.download(c.get_action_photos('sl', '2018-06'))
-
+    # print(c.get_action_photos('sl', '2018-06'))
+    c.download(c.get_action_photos('SL'))
+    k = input(u'按任意键退出。')
