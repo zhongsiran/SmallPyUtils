@@ -80,7 +80,7 @@ class CosDownloader:
 
 if __name__ == '__main__':
     # 选择监管所
-    division = 'SL'
+    division = 'YH'
     divisions = {'SL': '狮岭', 'YH': '裕华', 'TB': '炭步'}
     # 取得专项行动列表
     action_list = CosDownloader.get_actions_list(division)
@@ -105,6 +105,7 @@ if __name__ == '__main__':
             action = actions_dict[action_index]
             confirm = True  # 输入有效后中止循环
             c = CosDownloader()
+            print(action)
             c.download(c.get_action_photos(division, action))
             k = input(u'完成，按回车键退出。')
         except KeyError:

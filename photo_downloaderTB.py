@@ -80,7 +80,7 @@ class CosDownloader:
 
 if __name__ == '__main__':
     # 选择监管所
-    division = 'SL'
+    division = 'TB'
     divisions = {'SL': '狮岭', 'YH': '裕华', 'TB': '炭步'}
     # 取得专项行动列表
     action_list = CosDownloader.get_actions_list(division)
