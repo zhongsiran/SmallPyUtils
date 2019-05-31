@@ -19,7 +19,7 @@ class PyDoc(tk.Frame):
         self.process_and_choose_content()
 
     def choose_file(self):
-        self.file_path = filedialog.askopenfilename()
+        self.file_path = filedialog.askopenfilename(initialdir="e:/狮岭/2019案件/")
 
     def process_and_choose_content(self):
         if 'docx' in self.file_path or 'DOCX' in self.file_path:  # 判断文件名
@@ -61,7 +61,7 @@ class PyDoc(tk.Frame):
                 if '行政处罚决定书' in doc.paragraphs[current_paragraph_index].text:
                     block_start_index = current_paragraph_index + 2
                     jue_ding_shu_hao_index = current_paragraph_index + 1
-                elif '六个月内直接向人民法院起诉' in doc.paragraphs[current_paragraph_index].text:
+                elif '36899131。' in doc.paragraphs[current_paragraph_index].text:
                     judge_list = []
                     for m in range(block_start_index, current_paragraph_index + 1):
                         judge_list.append(doc.paragraphs[m].text)
