@@ -68,6 +68,13 @@ class PyDoc(tk.Frame):
                         judge_text = "\n  ".join(judge_list)
                         judge_text = "  " + judge_text
                     content['chu_fa_jue_ding'] = judge_text
+                elif '36898073。' in doc.paragraphs[current_paragraph_index].text:
+                    judge_list = []
+                    for m in range(block_start_index, current_paragraph_index + 1):
+                        judge_list.append(doc.paragraphs[m].text)
+                        judge_text = "\n  ".join(judge_list)
+                        judge_text = "  " + judge_text
+                    content['chu_fa_jue_ding'] = judge_text
 
             # 取得行政处罚建议的表格内容
             xing_chu_jian_yi = doc.tables[0].rows[2].cells[1].text  # 第1个表格里面
@@ -87,6 +94,7 @@ class PyDoc(tk.Frame):
         choice = ''
         while 'q' not in choice:
             print('请输入关键字(zj,tz,jy,jd,sp,xh,jdh)')
+            print(self.file_path)
             choice = input()
             if choice == 'zj':
                 pyperclip.copy(content['zhong_jie_bao_gao'])
