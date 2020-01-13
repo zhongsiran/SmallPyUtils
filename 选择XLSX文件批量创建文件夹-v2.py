@@ -13,7 +13,7 @@ class Data(tk.Frame):
         root.withdraw()  # 隐藏空白的TK画板。
         self.file_path = ''
         self.file_folder = ''
-        tkinter.messagebox.showwarning('提示','1、只能处理XLSX文件(无法选择其他格式的文件)\n2、将会在被选择的XLSX文件所在目录下生成文件夹\n3、以XLSX表格的第一张表为数据源，默认跳过首行，将所有列*依次*合并作为文件夹名称')
+        tkinter.messagebox.showwarning('提示','1、只能处理XLSX文件(无法选择其他格式的文件)\n2、将会在被选择的XLSX文件所在目录下生成文件夹\n3、以XLSX表格的第一张表为数据源。\n  a、默认跳过首行\n  b、将所有列从左到右合并作为文件夹名称，不希望出现在文件夹名称的数据请删去\n  c、如果要用文书生成器生成文书，请确保企业名称是最右边的一列！！')
         self.choose_file()
 
     def choose_file(self):
